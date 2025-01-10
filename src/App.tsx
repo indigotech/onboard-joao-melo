@@ -1,16 +1,10 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StatusBar,
-  Text,
-} from 'react-native';
+import { SafeAreaView, StatusBar, Text } from 'react-native';
 
-
-function App(): React.JSX.Element {
-
+function App(): JSX.Element {
   return (
     <SafeAreaView>
-      <StatusBar/>
+      <StatusBar />
       <Text> Hello Universe </Text>
     </SafeAreaView>
   );
