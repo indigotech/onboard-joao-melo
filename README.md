@@ -11,9 +11,13 @@ Ambiente:
 - React-Native 0.76.5
 - Node 20.15.1
 
-Passos para debugar e executar:
-Para executar rode
-IOS: npx react-native run-ios
-ANDROID: npx react-native run-android
+Android Studio: 17.0.11+0-17.0.11b1207.24-11852314 aarch64
+X-code: Version 16.0 (16A242d)
 
-Com isso será aberto o simulador e será executado na respectiva plataforma.
+Passos para debugar e executar:
+Para executar rode:
+npm install 
+IOS: npm run ios
+ANDROID: npm run android
+
+Com isso será aberto o emulador e será executado na respectiva plataforma.
