@@ -1,5 +1,5 @@
 import React from 'react';
-import { WelcomeUser } from './pages/WelcomeUser/index.tsx';
+import { WelcomeUser } from './pages/welcome-user/index.tsx';
 import { SafeAreaView } from 'react-native';
 
 function App(): JSX.Element {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
-import { Form } from '../../components/Form/index.tsx';
+import { Form } from '../../components/form/index.tsx';
 import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style.tsx';
 
 export function WelcomeUser(): JSX.Element {
