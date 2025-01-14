@@ -1,12 +1,15 @@
 import React from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import { Form } from '../../components/form/index.tsx';
+import { Form } from '../../components/form/index.tsx';
 import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style.tsx';
+import { ErrorMessage } from '../../components/error-message/index.tsx';
 
+export function WelcomeUser(): JSX.Element {
 export function WelcomeUser(): JSX.Element {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [valid, setValid] = React.useState(false);
+  const [valid, setValid] = React.useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
 
   function validateEmail(): boolean {
@@ -40,10 +43,16 @@ export function WelcomeUser(): JSX.Element {
   }
 
   function validate(): void {
+    const isPasswordValid = validatePassword();
+    const isEmailValid = validateEmail();
+
+    if (isEmailValid && isPasswordValid) {
+      setValid(true);
+      setErrorMessage('');
+      return;
+    }
+
     setValid(false);
-    setErrorMessage('');
-    setValid(validateEmail());
-    setValid(validatePassword());
   }
 
   return (
@@ -51,14 +60,14 @@ export function WelcomeUser(): JSX.Element {
       <StatusBar />
       <WelcomeTittle> Bem-vindo(a) à Taqtile! </WelcomeTittle>
       <InfoBox>
-        <Form name="E-mail" info="" />
-        <Form name="Senha" info="" />
+        <Form name="E-mail" info="" setValue={setEmail} />
+        <Form name="Senha" info="" setValue={setPassword} />
       </InfoBox>
       <LogginButton onPress={validate}>
         <LoginText>Entrar</LoginText>
       </LogginButton>
 
-      {!valid && <Text> {errorMessage} </Text>}
+      {!valid && <ErrorMessage message={errorMessage} />}
     </SafeAreaView>
   );
 }
