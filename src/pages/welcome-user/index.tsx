@@ -1,8 +1,8 @@
 import React from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
+import { Form } from '../../components/form/index';
 import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style';
 import { ErrorMessage } from '../../components/error-message/index';
-import { Form } from '../../components/Form/index';
 
 export function WelcomeUser(): JSX.Element {
   const [email, setEmail] = React.useState('');
@@ -10,15 +10,15 @@ export function WelcomeUser(): JSX.Element {
   const [valid, setValid] = React.useState(true);
   const [errorMessage, setErrorMessage] = React.useState('');
 
-  function validateEmail(): boolean {
-    if (email.trim() === '') {
+  function validEmail(): boolean {
+    if (email.trim().length === 0) {
       setErrorMessage('O campo de e-mail não pode ser vazio');
       return false;
     }
 
     const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (emailRegex.test(email)) {
+    if (!emailRegex.test(email)) {
       setErrorMessage('E-mail inválido');
       return false;
     }
@@ -26,10 +26,7 @@ export function WelcomeUser(): JSX.Element {
     return true;
   }
 
-  function validatePassword(): boolean {
-    if (!password) {
-      return false;
-    }
+  function validPassword(): boolean {
     const passwordRegex: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
 
     if (!passwordRegex.test(password)) {
@@ -41,8 +38,8 @@ export function WelcomeUser(): JSX.Element {
   }
 
   function validate(): void {
-    const isPasswordValid = validatePassword();
-    const isEmailValid = validateEmail();
+    const isPasswordValid = validPassword();
+    const isEmailValid = validEmail();
 
     if (isEmailValid && isPasswordValid) {
       setValid(true);
