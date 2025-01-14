@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Container, Input, LabelInput } from './style';
 
-interface UserFormProps {
+interface FormProps {
   name: string;
   info: string;
 }
 
-function UserForm(props: UserFormProps): JSX.Element {
+export function Form(props: FormProps): JSX.Element {
   return (
     <Container>
       <LabelInput> {props.name} </LabelInput>
@@ -15,5 +15,3 @@ function UserForm(props: UserFormProps): JSX.Element {
     </Container>
   );
 }
-
-export default UserForm;

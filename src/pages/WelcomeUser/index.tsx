@@ -1,16 +1,16 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, Text, View } from 'react-native';
-import UserForm from '../../components/UserForm/index.tsx';
+import { SafeAreaView, StatusBar } from 'react-native';
+import { Form } from '../../components/Form/index.tsx';
 import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style.tsx';
 
-function WelcomeUser(): JSX.Element {
+export function WelcomeUser(): JSX.Element {
   return (
     <SafeAreaView>
       <StatusBar />
       <WelcomeTittle> Bem-vindo(a) à Taqtile! </WelcomeTittle>
       <InfoBox>
-        <UserForm name="E-mail" info="" />
-        <UserForm name="Senha" info="" />
+        <Form name="E-mail" info="" />
+        <Form name="Senha" info="" />
       </InfoBox>
       <LogginButton>
         <LoginText>Entrar</LoginText>
@@ -18,5 +18,3 @@ function WelcomeUser(): JSX.Element {
     </SafeAreaView>
   );
 }
-
-export default WelcomeUser;
