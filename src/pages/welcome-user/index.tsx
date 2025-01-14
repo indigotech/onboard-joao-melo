@@ -1,11 +1,9 @@
 import React from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
-import { Form } from '../../components/form/index.tsx';
-import { Form } from '../../components/form/index.tsx';
-import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style.tsx';
-import { ErrorMessage } from '../../components/error-message/index.tsx';
+import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style';
+import { ErrorMessage } from '../../components/error-message/index';
+import { Form } from '../../components/Form/index';
 
-export function WelcomeUser(): JSX.Element {
 export function WelcomeUser(): JSX.Element {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
