@@ -1,11 +1,11 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, Text } from 'react-native';
+import { WelcomeUser } from './pages/welcome-user/index.tsx';
+import { SafeAreaView } from 'react-native';
 
 function App(): JSX.Element {
   return (
     <SafeAreaView>
-      <StatusBar />
-      <Text> Hello Universe </Text>
+      <WelcomeUser />
     </SafeAreaView>
   );
 }
