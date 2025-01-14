@@ -9,7 +9,7 @@ export function Form(props: FormProps): JSX.Element {
   return (
     <Container>
       <LabelInput> {props.name} </LabelInput>
-      <Input onChangeText={props.setValue}> {props.info} </Input>
+      <Input onChangeText={props.setValue} value={props.info} Input />
     </Container>
   );
 }

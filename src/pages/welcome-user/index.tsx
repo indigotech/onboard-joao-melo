@@ -55,8 +55,8 @@ export function WelcomeUser(): JSX.Element {
       <StatusBar />
       <WelcomeTittle> Bem-vindo(a) à Taqtile! </WelcomeTittle>
       <InfoBox>
-        <Form name="E-mail" info="" setValue={setEmail} />
-        <Form name="Senha" info="" setValue={setPassword} />
+        <Form name="E-mail" info={email} setValue={setEmail} />
+        <Form name="Senha" info={password} setValue={setPassword} />
       </InfoBox>
       <LogginButton onPress={validate}>
         <LoginText>Entrar</LoginText>
