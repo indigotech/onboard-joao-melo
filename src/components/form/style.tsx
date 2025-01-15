@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   display: flex;
   justify-content: center;
-  background-color: 'blue';
 `;
 
 export const Input = styled.TextInput`
@@ -13,5 +12,5 @@ export const Input = styled.TextInput`
 `;
 
 export const LabelInput = styled.Text`
-  font-size: 15;
+  font-size: 15px;
 `;
