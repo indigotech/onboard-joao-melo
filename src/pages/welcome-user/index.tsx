@@ -1,14 +1,26 @@
-import React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, StatusBar, Text } from 'react-native';
 import { Form } from '../../components/form/index';
 import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style';
 import { ErrorMessage } from '../../components/error-message/index';
+import { useMutation } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LoginData, LoginVars } from '../../graphql/types/types';
+import { LOGIN_MUTATION } from '../../graphql/mutations/authenticateUser';
 
 export function WelcomeUser(): JSX.Element {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [valid, setValid] = React.useState(true);
-  const [errorMessage, setErrorMessage] = React.useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [valid, setValid] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [login, { data, loading, error }] = useMutation<LoginData, LoginVars>(LOGIN_MUTATION);
+
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(error.message);
+      setValid(false);
+    }
+  }, [loading]);
 
   function validEmail(): boolean {
     if (email.trim().length === 0) {
@@ -44,10 +56,21 @@ export function WelcomeUser(): JSX.Element {
     if (isEmailValid && isPasswordValid) {
       setValid(true);
       setErrorMessage('');
+      handleLogin();
       return;
     }
 
     setValid(false);
+  }
+
+  async function handleLogin(): Promise<void> {
+    try {
+      const response = await login({ variables: { email: email, password: password } });
+      await AsyncStorage.setItem('token', response.data.login.token);
+    } catch (error) {
+      setErrorMessage(error.message);
+      setValid(false);
+    }
   }
 
   return (
@@ -63,6 +86,11 @@ export function WelcomeUser(): JSX.Element {
       </LogginButton>
 
       {!valid && <ErrorMessage message={errorMessage} />}
+      {data && (
+        <Text>
+          Welcome, {data.login.user.name}! Token: {data.login.token}
+        </Text>
+      )}
     </SafeAreaView>
   );
 }
