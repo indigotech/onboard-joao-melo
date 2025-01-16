@@ -1,6 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-export function UserList(): JSX.Element {
-  return <Text>Usuarios</Text>;
+interface UserListProps {
+  message: string;
+}
+
+export function UserList(props: UserListProps): JSX.Element {
+  return <Text>{props.message}</Text>;
 }

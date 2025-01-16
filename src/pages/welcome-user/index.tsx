@@ -66,7 +66,12 @@ export function WelcomeUser(): JSX.Element {
   async function handleLogin(): Promise<void> {
     try {
       const response = await login({ variables: { email: email, password: password } });
-      await AsyncStorage.setItem('token', response.data.login.token);
+      if (response?.data) {
+        await AsyncStorage.setItem('token', response.data.login.token);
+      } else {
+        setErrorMessage('Login failed: no data received');
+        setValid(false);
+      }
     } catch (error) {
       setErrorMessage(error.message);
       setValid(false);
