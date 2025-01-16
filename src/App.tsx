@@ -1,17 +1,21 @@
-import React from 'react';
-import { WelcomeUser } from './pages/welcome-user/index';
-import { SafeAreaView } from 'react-native';
-import { ApolloProvider } from '@apollo/client';
-import { client } from './graphql/client';
+import { Navigation } from 'react-native-navigation';
+import { registerScreens } from './navigation/register-pages';
 
-function App(): JSX.Element {
-  return (
-    <ApolloProvider client={client}>
-      <SafeAreaView>
-        <WelcomeUser />
-      </SafeAreaView>
-    </ApolloProvider>
-  );
-}
+registerScreens();
 
-export default App;
+Navigation.events().registerAppLaunchedListener(async () => {
+  Navigation.dismissAllModals();
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [
+          {
+            component: {
+              name: 'Home',
+            },
+          },
+        ],
+      },
+    },
+  });
+});
