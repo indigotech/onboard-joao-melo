@@ -14,7 +14,7 @@ export function WelcomeUser({ navigation }): JSX.Element {
   const [valid, setValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [login, { data }] = useMutation<LoginData, LoginVars>(LOGIN_MUTATION);
+  const [login] = useMutation<LoginData, LoginVars>(LOGIN_MUTATION);
 
   function validEmail(): boolean {
     if (email.trim().length === 0) {
