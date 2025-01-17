@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StatusBar, Text } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import { Form } from '../../components/form/index';
 import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style';
 import { ErrorMessage } from '../../components/error-message/index';
@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginData, LoginVars } from '../../graphql/types/types';
 import { LOGIN_MUTATION } from '../../graphql/mutations/authenticateUser';
 
-export function WelcomeUser(): JSX.Element {
+export function WelcomeUser({ navigation }): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(true);
@@ -66,6 +66,13 @@ export function WelcomeUser(): JSX.Element {
   async function handleLogin(): Promise<void> {
     try {
       const response = await login({ variables: { email: email, password: password } });
+
+      if (!response?.data?.login?.token) {
+        setErrorMessage('Usuário ou senha inválidos');
+        setValid(false);
+        return;
+      }
+      navigation.navigate('UserList');
       await AsyncStorage.setItem('token', response.data.login.token);
     } catch (error) {
       setErrorMessage(error.message);
@@ -86,11 +93,6 @@ export function WelcomeUser(): JSX.Element {
       </LogginButton>
 
       {!valid && <ErrorMessage message={errorMessage} />}
-      {data && (
-        <Text>
-          Welcome, {data.login.user.name}! Token: {data.login.token}
-        </Text>
-      )}
     </SafeAreaView>
   );
 }
