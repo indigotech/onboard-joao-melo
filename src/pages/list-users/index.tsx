@@ -24,7 +24,7 @@ export function ListUsers() {
     if (!data?.users.pageInfo.hasNextPage) return;
 
     const fetchMoreResult = await fetchMore({
-      variables: { offset: offset + LIMIT },
+      variables: { offset: offset + LIMIT, limit: LIMIT },
     });
 
     if (!fetchMoreResult) return;
