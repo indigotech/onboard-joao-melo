@@ -1,10 +1,11 @@
 import React from 'react';
-import { SafeAreaView, Text } from 'react-native';
+import { SafeAreaView } from 'react-native';
+import { BoxInfo } from '../../components/box-info/index';
 
 export function ListUsers() {
   return (
     <SafeAreaView>
-      <Text>Lista de Usuários</Text>
+      <BoxInfo email="email" name="nome" />
     </SafeAreaView>
   );
 }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, SafeAreaView, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StatusBar } from 'react-native';
 import { Form } from '../../components/form/index';
 import { ActivityIndicatorButton, InfoBox, LogginButton, LoginText, WelcomeTittle } from './style';
 import { ErrorMessage } from '../../components/error-message/index';
