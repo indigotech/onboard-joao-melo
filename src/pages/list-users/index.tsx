@@ -6,9 +6,9 @@ import { GET_USERS_QUERY } from '../../graphql/query/getUsers';
 import { useQuery } from '@apollo/client';
 import { UsersResponse, User } from '../../graphql/types/types';
 
-export function ListUsers() {
-  const LIMIT = 20;
+const LIMIT = 20;
 
+export function ListUsers() {
   const [users, setUsers] = useState<User[]>([]);
   const [offset, setOffset] = useState(0);
 
@@ -21,13 +21,17 @@ export function ListUsers() {
   });
 
   const loadMoreUsers = async () => {
-    if (!data?.users.pageInfo.hasNextPage) return;
+    if (!data?.users.pageInfo.hasNextPage) {
+      return;
+    }
 
     const fetchMoreResult = await fetchMore({
       variables: { offset: offset + LIMIT, limit: LIMIT },
     });
 
-    if (!fetchMoreResult) return;
+    if (!fetchMoreResult) {
+      return;
+    }
 
     setOffset(prevOffset => prevOffset + LIMIT);
 

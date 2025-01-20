@@ -65,17 +65,17 @@ export function WelcomeUser({ navigation }): JSX.Element {
       const response = await login({ variables: { email: email, password: password } });
 
       if (!response?.data?.login?.token) {
-        setErrorMessage('Usuário ou senha inválidos');
+        setErrorMessage('Não foi possível realizar o login');
         setValid(false);
         setLoading(false);
         return;
       }
       navigation.navigate('UserList');
-      setLoading(false);
       await AsyncStorage.setItem('token', response.data.login.token);
     } catch (error) {
       setErrorMessage(error.message);
       setValid(false);
+    } finally {
       setLoading(false);
     }
   }
