@@ -5,7 +5,11 @@ import { AddButton, TextButton } from '../list-users/style';
 import { ErrorMessage } from '../../components/error-message';
 import { View, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { validateBirthDate, validateEmail, validateName, validatePhone, validateRole } from '../../utils/validations';
+import { validateBirthDate, 
+  validateEmail, 
+  validateName, 
+  validatePhone, 
+  validateRole } from '../../utils/validations';
 import { useMutation } from '@apollo/client';
 import { CREATE_USER_MUTATION } from '../../graphql/mutations/createUser';
 
