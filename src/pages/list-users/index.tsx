@@ -5,6 +5,7 @@ import { FooterList } from '../../components/footer-list';
 import { GET_USERS_QUERY } from '../../graphql/query/getUsers';
 import { useQuery } from '@apollo/client';
 import { UsersResponse, User } from '../../graphql/types/types';
+import { AddUser } from '../add-user/index';
 
 const LIMIT = 20;
 
@@ -60,6 +61,7 @@ export function ListUsers() {
   return (
     <SafeAreaView>
       <View style={{ padding: 16 }}>
+        <AddUser/>
         <FlatList
           data={users}
           renderItem={({ item }) => (
