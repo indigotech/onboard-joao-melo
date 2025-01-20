@@ -10,7 +10,7 @@ export const InfoBox = styled.View`
   width: 90%;
   margin: auto;
   padding: 10px;
-  margin-top: 20px;
+  margin-top: 40px;
 `;
 
 export const ButtonBox = styled.View`
