@@ -15,10 +15,15 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.5",
-    "styled-components": "6.1.14"
+    "react-native-safe-area-context": "5.1.0",
+    "react-native-screens": "4.5.0",
+    "styled-components": "6.1.14",
+    "@react-navigation/stack": "7.1.1",
+    "react-native-gesture-handler": "2.22.0",
+    "@react-native-masked-view/masked-view": "0.3.2",
+    "@react-native-async-storage/async-storage": "2.1.0"
   },
   "devDependencies": {
-    "@react-native-async-storage/async-storage": "2.1.0",
     "@babel/core": "7.25.2",
     "@babel/preset-env": "7.25.3",
     "@babel/runtime": "7.25.0",

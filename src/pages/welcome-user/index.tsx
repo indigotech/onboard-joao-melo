@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StatusBar, Text } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StatusBar } from 'react-native';
 import { Form } from '../../components/form/index';
-import { InfoBox, LogginButton, LoginText, WelcomeTittle } from './style';
+import { ActivityIndicatorButton, InfoBox, LogginButton, LoginText, WelcomeTittle } from './style';
 import { ErrorMessage } from '../../components/error-message/index';
 import { useMutation } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginData, LoginVars } from '../../graphql/types/types';
 import { LOGIN_MUTATION } from '../../graphql/mutations/authenticateUser';
 
-export function WelcomeUser(): JSX.Element {
+export function WelcomeUser({ navigation }): JSX.Element {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
-  const [login, { data, loading, error }] = useMutation<LoginData, LoginVars>(LOGIN_MUTATION);
-
-  useEffect(() => {
-    if (error) {
-      setErrorMessage(error.message);
-      setValid(false);
-    }
-  }, [loading]);
+  const [loading, setLoading] = useState(false);
+  const [login] = useMutation<LoginData, LoginVars>(LOGIN_MUTATION);
 
   function validEmail(): boolean {
     if (email.trim().length === 0) {
@@ -64,12 +58,25 @@ export function WelcomeUser(): JSX.Element {
   }
 
   async function handleLogin(): Promise<void> {
+    if (loading) return;
+
     try {
+      setLoading(true);
       const response = await login({ variables: { email: email, password: password } });
+
+      if (!response?.data?.login?.token) {
+        setErrorMessage('Não foi possível realizar o login');
+        setValid(false);
+        setLoading(false);
+        return;
+      }
+      navigation.navigate('UserList');
       await AsyncStorage.setItem('token', response.data.login.token);
     } catch (error) {
       setErrorMessage(error.message);
       setValid(false);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -81,16 +88,11 @@ export function WelcomeUser(): JSX.Element {
         <Form name="E-mail" info={email} setValue={setEmail} />
         <Form name="Senha" info={password} setValue={setPassword} />
       </InfoBox>
-      <LogginButton onPress={validate}>
-        <LoginText>Entrar</LoginText>
+      <LogginButton onPress={validate} disabled={loading}>
+        {loading ? <ActivityIndicatorButton /> : <LoginText>Entrar</LoginText>}
       </LogginButton>
 
       {!valid && <ErrorMessage message={errorMessage} />}
-      {data && (
-        <Text>
-          Welcome, {data.login.user.name}! Token: {data.login.token}
-        </Text>
-      )}
     </SafeAreaView>
   );
 }
