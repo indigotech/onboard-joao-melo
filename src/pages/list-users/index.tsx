@@ -44,10 +44,6 @@ export function ListUsers({ navigation }): JSX.Element {
     };
   };
 
-  const handleUserPress = (user: User) => {
-    console.log('User pressed:', user);
-  };
-
   if (error) {
     return (
       <SafeAreaView>
@@ -62,6 +58,10 @@ export function ListUsers({ navigation }): JSX.Element {
     navigation.navigate('AddUser');
   };
 
+  const goToUserDetails = (user: User) => {
+    navigation.navigate('UserDetails', { id: user.id });
+  };
+
   return (
     <SafeAreaView>
       <TitleBox>
@@ -71,7 +71,7 @@ export function ListUsers({ navigation }): JSX.Element {
         <FlatList
           data={users}
           renderItem={({ item }) => (
-            <BoxInfo name={item.name} email={item.email} onPress={() => handleUserPress(item)} />
+            <BoxInfo name={item.name} email={item.email} onPress={() => goToUserDetails(item)} />
           )}
           keyExtractor={item => String(item.id)}
           onEndReached={loadMoreUsers}
