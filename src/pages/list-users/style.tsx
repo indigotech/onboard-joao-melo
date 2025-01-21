@@ -17,11 +17,11 @@ export const TittleText = styled.Text`
 
 export const FlatBox = styled.View`
   padding: 20px;
-  margin-top: -20;
+  margin-top: -20px;
   margin-left: 20px;
   margin-right: 20px;
   border-radius: 20px;
-  height: 500;
+  height: 500px;
   background-color: #f0eeee;
 `;
 
