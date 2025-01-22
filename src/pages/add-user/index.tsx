@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { Container, InfoBox, ButtonBox, BoxErrorMessage } from './style';
-import { Form } from '../../components/form/index';
+import React, { useRef, useState } from 'react';
+import { Container, FormBox, ButtonBox, BoxErrorMessage } from './style';
+import { Form, FormRef } from '../../components/form/index';
 import { AddButton, TextButton } from '../list-users/style';
 import { ErrorMessage } from '../../components/error-message';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView, SafeAreaView, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { validateBirthDate, validateEmail, validateName, validatePhone, validateRole } from '../../utils/validations';
+import {
+  validateBirthDate,
+  validateEmail,
+  validateName,
+  validatePassword,
+  validatePhone,
+} from '../../utils/validations';
 import { useMutation } from '@apollo/client';
 import { CREATE_USER_MUTATION } from '../../graphql/mutations/createUser';
+
+import { UserCreation } from '../../graphql/types/types';
+import { H1 } from '../../global-style/style';
+import { PrimaryButton } from '../../components/primary-button';
 
 enum UserRole {
   ADMIN = 'admin',
@@ -15,98 +25,90 @@ enum UserRole {
 }
 
 export function AddUser({ navigation }) {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [birthDate, setBirthDate] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [role, setRole] = useState(UserRole.USER);
   const [loading, setLoading] = useState(false);
-  const [createUser, { error, data }] = useMutation(CREATE_USER_MUTATION);
+  const [createUser] = useMutation(CREATE_USER_MUTATION);
   const [errorMessage, setErrorMessage] = useState('');
 
-  async function handleAddUser() {
-    const isoBirthDate = new Date(birthDate.split('/').reverse().join('-')).toISOString();
+  const nameRef = useRef<FormRef>(null);
+  const phoneRef = useRef<FormRef>(null);
+  const birthDateRef = useRef<FormRef>(null);
+  const emailRef = useRef<FormRef>(null);
+  const passwordRef = useRef<FormRef>(null);
 
+  async function handleAddUser(params: UserCreation) {
     try {
       setLoading(true);
 
       const response = await createUser({
         variables: {
-          data: {
-            name: name,
-            phone: phone,
-            birthDate: isoBirthDate,
-            email: email,
-            password: password,
-            role: role,
-          },
+          data: params,
         },
       });
 
-      if (response.data?.createUser) {
-        navigation.navigate('UserList');
+      if (!response.data?.createUser) {
+        setErrorMessage('Não foi possível adicionar o usuário.');
+        return;
       }
+
+      navigation.navigate('UserList');
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage((error as Error).message);
     } finally {
       setLoading(false);
     }
   }
 
   function validate() {
-    const errorMessageRole = validateRole(role);
-    const errorMessageEmail = validateEmail(email);
-    const errorMessageBirthDate = validateBirthDate(birthDate);
-    const errorMessagePhone = validatePhone(phone);
-    const errorMessageName = validateName(name);
+    const name = nameRef.current?.validateForms() ?? false;
+    const phone = phoneRef.current?.validateForms() ?? false;
+    const birthDate = birthDateRef.current?.validateForms() ?? false;
+    const email = emailRef.current?.validateForms() ?? false;
+    const password = passwordRef.current?.validateForms() ?? false;
 
-    if (errorMessageName) {
-      setErrorMessage(errorMessageName);
-      return;
-    } else if (errorMessagePhone) {
-      setErrorMessage(errorMessagePhone);
-      return;
-    } else if (errorMessageBirthDate) {
-      setErrorMessage(errorMessageBirthDate);
-      return;
-    } else if (errorMessageEmail) {
-      setErrorMessage(errorMessageEmail);
-      return;
-    } else if (errorMessageRole) {
-      setErrorMessage(errorMessageRole);
+    if (!name || !phone || !birthDate || !email || !password) {
       return;
     }
 
+    const isoBirthDate = new Date(birthDate.split('/').reverse().join('-')).toISOString();
+
+    const params: UserCreation = {
+      name: name,
+      phone: phone,
+      birthDate: isoBirthDate,
+      email: email,
+      password: password,
+      role: role,
+    };
+
     setErrorMessage('');
 
-    handleAddUser();
-
-    return;
+    handleAddUser(params);
   }
 
   return (
     <Container>
-      <InfoBox>
-        <Form name="Nome" info={name} setValue={setName} />
-        <Form name="Telefone" info={phone} setValue={setPhone} />
-        <Form name="Data de Nascimento (dd/mm/yyyy)" info={birthDate} setValue={setBirthDate} />
-        <Form name="E-mail" info={email} setValue={setEmail} />
-        <Form name="Senha" info={password} setValue={setPassword} />
-        <View>
-          <Text>Escolha o Role</Text>
-          <Picker selectedValue={role} onValueChange={itemValue => setRole(itemValue)}>
-            <Picker.Item label="Admin" value={UserRole.ADMIN} />
-            <Picker.Item label="User" value={UserRole.USER} />
-          </Picker>
-        </View>
-      </InfoBox>
-      <BoxErrorMessage>{errorMessage && <ErrorMessage message={errorMessage} />}</BoxErrorMessage>
-      <ButtonBox>
-        <AddButton onPress={validate}>
-          <TextButton> Adicionar </TextButton>
-        </AddButton>
-      </ButtonBox>
+      <ScrollView>
+        <H1>Adicionar usuario</H1>
+        <FormBox>
+          <Form name="Nome" validateValue={validateName} ref={nameRef} />
+          <Form name="Telefone" validateValue={validatePhone} ref={phoneRef} />
+          <Form name="Data de Nascimento (dd/mm/yyyy)" validateValue={validateBirthDate} ref={birthDateRef} />
+          <Form name="E-mail" validateValue={validateEmail} ref={emailRef} />
+          <Form name="Senha" validateValue={validatePassword} ref={passwordRef} />
+          <View>
+            <Text>Escolha o Role</Text>
+            <Picker selectedValue={role} onValueChange={itemValue => setRole(itemValue)}>
+              <Picker.Item label="Admin" value={UserRole.ADMIN} />
+              <Picker.Item label="User" value={UserRole.USER} />
+            </Picker>
+          </View>
+          <BoxErrorMessage>{errorMessage && <ErrorMessage message={errorMessage} />}</BoxErrorMessage>
+          <ButtonBox>
+            <PrimaryButton text="Concluir" loading={loading} validate={validate} />
+          </ButtonBox>
+        </FormBox>
+      </ScrollView>
     </Container>
   );
 }
