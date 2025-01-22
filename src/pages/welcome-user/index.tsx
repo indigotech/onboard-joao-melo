@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginData, LoginVars } from '../../graphql/types/types';
 import { LOGIN_MUTATION } from '../../graphql/mutations/authenticateUser';
+import { validateEmail, validatePassword } from '../../utils/validations';
 
 export function WelcomeUser({ navigation }): JSX.Element {
   const [email, setEmail] = useState('');
@@ -16,45 +17,24 @@ export function WelcomeUser({ navigation }): JSX.Element {
   const [loading, setLoading] = useState(false);
   const [login] = useMutation<LoginData, LoginVars>(LOGIN_MUTATION);
 
-  function validEmail(): boolean {
-    if (email.trim().length === 0) {
-      setErrorMessage('O campo de e-mail não pode ser vazio');
-      return false;
-    }
-
-    const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      setErrorMessage('E-mail inválido');
-      return false;
-    }
-
-    return true;
-  }
-
-  function validPassword(): boolean {
-    const passwordRegex: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
-
-    if (!passwordRegex.test(password)) {
-      setErrorMessage('A senha deve ter 7 caracteres, pelo menos uma letra e um número');
-      return false;
-    }
-
-    return true;
-  }
-
   function validate(): void {
-    const isPasswordValid = validPassword();
-    const isEmailValid = validEmail();
+    const errorMessagePassword = validatePassword(password);
+    const errorMessageEmail = validateEmail(email);
 
-    if (isEmailValid && isPasswordValid) {
-      setValid(true);
-      setErrorMessage('');
-      handleLogin();
+    if (errorMessageEmail) {
+      setValid(false);
+      setErrorMessage(errorMessageEmail);
+      return;
+    } else if (errorMessagePassword) {
+      setValid(false);
+      setErrorMessage(errorMessagePassword);
       return;
     }
 
-    setValid(false);
+    setValid(true);
+    setErrorMessage('');
+    handleLogin();
+    return;
   }
 
   async function handleLogin(): Promise<void> {
@@ -62,7 +42,14 @@ export function WelcomeUser({ navigation }): JSX.Element {
 
     try {
       setLoading(true);
-      const response = await login({ variables: { email: email, password: password } });
+      const response = await login({
+        variables: {
+          data: {
+            email: email,
+            password: password,
+          },
+        },
+      });
 
       if (!response?.data?.login?.token) {
         setErrorMessage('Não foi possível realizar o login');
@@ -70,11 +57,11 @@ export function WelcomeUser({ navigation }): JSX.Element {
         setLoading(false);
         return;
       }
-      
+
       navigation.navigate('UserList');
       await AsyncStorage.setItem('token', response.data.login.token);
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage((error as Error).message);
       setValid(false);
     } finally {
       setLoading(false);
