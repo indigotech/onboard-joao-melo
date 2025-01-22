@@ -70,11 +70,11 @@ export function WelcomeUser({ navigation }): JSX.Element {
         setLoading(false);
         return;
       }
-      
+
       navigation.navigate('UserList');
       await AsyncStorage.setItem('token', response.data.login.token);
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage((error as Error).message);
       setValid(false);
     } finally {
       setLoading(false);
