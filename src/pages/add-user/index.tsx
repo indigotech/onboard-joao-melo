@@ -30,14 +30,17 @@ export function AddUser({ navigation }) {
 
     try {
       setLoading(true);
+
       const response = await createUser({
         variables: {
-          name: name,
-          phone: phone,
-          birthDate: isoBirthDate,
-          email: email,
-          password: password,
-          role: role,
+          data: {
+            name: name,
+            phone: phone,
+            birthDate: isoBirthDate,
+            email: email,
+            password: password,
+            role: role,
+          },
         },
       });
 
