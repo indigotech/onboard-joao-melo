@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
 import { ButtonBox, AddButton, TextButton } from '../list-users/style';
 import { GET_USER_BY_ID } from '../../graphql/query/getUser';
 import { useQuery } from '@apollo/client';
+import { Container, Header, FieldGroup, Label, Value } from './style';
+import { ErrorMessage } from '../../components/error-message';
 
 export function UserDetails({ navigation }) {
   const route = useRoute();
@@ -29,27 +31,46 @@ export function UserDetails({ navigation }) {
 
   if (error || !user) {
     return (
-      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: 'red', fontSize: 16 }}>Erro ao carregar os dados do usuário.</Text>
+      <SafeAreaView>
+        <ErrorMessage message="Erro ao carregar os dados do usuário." />
       </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16 }}>Detalhes do usuário</Text>
-        <Text>ID: {user.id}</Text>
-        <Text>Nome: {user.name}</Text>
-        <Text>Data de nascimento: {user.birthDate}</Text>
-        <Text>Email: {user.email}</Text>
-        <Text>Telefone: {user.phone}</Text>
+      <Container>
+        <Header>Perfil do usuário</Header>
+        <FieldGroup>
+          <Label>Nome</Label>
+          <Value placeholder={user.name} editable={false} />
+        </FieldGroup>
+        <FieldGroup>
+          <Label>Id</Label>
+          <Value placeholder={user.id} editable={false} />
+        </FieldGroup>
+        <FieldGroup>
+          <Label>E-mail</Label>
+          <Value placeholder={user.email} editable={false} />
+        </FieldGroup>
+        <FieldGroup>
+          <Label>Telefone</Label>
+          <Value placeholder={user.phone} editable={false} />
+        </FieldGroup>
+        <FieldGroup>
+          <Label>Data de nascimento</Label>
+          <Value placeholder={user.birthDate} editable={false} />
+        </FieldGroup>
+        <FieldGroup>
+          <Label>Permissão</Label>
+          <Value placeholder={user.role} editable={false} />
+        </FieldGroup>
         <ButtonBox>
           <AddButton onPress={goToListUsers}>
             <TextButton> Voltar </TextButton>
           </AddButton>
         </ButtonBox>
-      </View>
+      </Container>
     </SafeAreaView>
   );
 }
