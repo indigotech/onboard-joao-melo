@@ -5,11 +5,7 @@ import { AddButton, TextButton } from '../list-users/style';
 import { ErrorMessage } from '../../components/error-message';
 import { View, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { validateBirthDate, 
-  validateEmail, 
-  validateName, 
-  validatePhone, 
-  validateRole } from '../../utils/validations';
+import { validateBirthDate, validateEmail, validateName, validatePhone, validateRole } from '../../utils/validations';
 import { useMutation } from '@apollo/client';
 import { CREATE_USER_MUTATION } from '../../graphql/mutations/createUser';
 
@@ -59,26 +55,26 @@ export function AddUser({ navigation }) {
   }
 
   function validate() {
-    const isValidRole = validateRole(role);
-    const isValidEmail = validateEmail(email);
-    const isValidBirthDate = validateBirthDate(birthDate);
-    const isValidPhone = validatePhone(phone);
-    const isValidName = validateName(name);
+    const errorMessageRole = validateRole(role);
+    const errorMessageEmail = validateEmail(email);
+    const errorMessageBirthDate = validateBirthDate(birthDate);
+    const errorMessagePhone = validatePhone(phone);
+    const errorMessageName = validateName(name);
 
-    if (isValidName) {
-      setErrorMessage(isValidName);
+    if (errorMessageName) {
+      setErrorMessage(errorMessageName);
       return;
-    } else if (isValidPhone) {
-      setErrorMessage(isValidPhone);
+    } else if (errorMessagePhone) {
+      setErrorMessage(errorMessagePhone);
       return;
-    } else if (isValidBirthDate) {
-      setErrorMessage(isValidBirthDate);
+    } else if (errorMessageBirthDate) {
+      setErrorMessage(errorMessageBirthDate);
       return;
-    } else if (isValidEmail) {
-      setErrorMessage(isValidEmail);
+    } else if (errorMessageEmail) {
+      setErrorMessage(errorMessageEmail);
       return;
-    } else if (isValidRole) {
-      setErrorMessage(isValidRole);
+    } else if (errorMessageRole) {
+      setErrorMessage(errorMessageRole);
       return;
     }
 

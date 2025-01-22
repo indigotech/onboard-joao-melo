@@ -39,6 +39,10 @@ export function validateBirthDate(birthDate: string): string | null {
 }
 
 export function validateEmail(email: string): string | null {
+  if (email.trim().length === 0) {
+    return 'O campo de e-mail não pode ser vazio';
+  }
+
   const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailRegex.test(email)) {
@@ -50,6 +54,15 @@ export function validateEmail(email: string): string | null {
 export function validateRole(role: UserRole): string | null {
   if (![UserRole.ADMIN, UserRole.USER].includes(role)) {
     return 'Permissão inválida.';
+  }
+  return null;
+}
+
+export function validatePassword(password: string): string | null {
+  const passwordRegex: RegExp = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
+
+  if (!passwordRegex.test(password)) {
+    return 'A senha deve ter 7 caracteres, pelo menos uma letra e um número';
   }
   return null;
 }
