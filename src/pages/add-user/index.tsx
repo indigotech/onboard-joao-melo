@@ -6,6 +6,8 @@ import { ErrorMessage } from '../../components/error-message';
 import { View, Text } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { validateBirthDate, validateEmail, validateName, validatePhone, validateRole } from '../../utils/validations';
+import { useMutation } from '@apollo/client';
+import { CREATE_USER_MUTATION } from '../../graphql/mutations/createUser';
 
 enum UserRole {
   ADMIN = 'admin',
@@ -19,8 +21,38 @@ export function AddUser({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState(UserRole.USER);
-
+  const [loading, setLoading] = useState(false);
+  const [createUser, { error, data }] = useMutation(CREATE_USER_MUTATION);
   const [errorMessage, setErrorMessage] = useState('');
+
+  async function handleAddUser() {
+    const isoBirthDate = new Date(birthDate.split('/').reverse().join('-')).toISOString();
+
+    try {
+      setLoading(true);
+
+      const response = await createUser({
+        variables: {
+          data: {
+            name: name,
+            phone: phone,
+            birthDate: isoBirthDate,
+            email: email,
+            password: password,
+            role: role,
+          },
+        },
+      });
+
+      if (response.data?.createUser) {
+        navigation.navigate('UserList');
+      }
+    } catch (error) {
+      setErrorMessage(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   function validate() {
     const isValidRole = validateRole(role);
@@ -48,7 +80,7 @@ export function AddUser({ navigation }) {
 
     setErrorMessage('');
 
-    //realiza a requisicao
+    handleAddUser();
 
     return;
   }
