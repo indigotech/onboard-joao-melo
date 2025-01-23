@@ -66,7 +66,7 @@ export function UserDetails({ navigation }) {
           <Label>Permissão</Label>
           <Value placeholder={user.role} editable={false} />
         </FieldGroup>
-        <PrimaryButton validate={goToListUsers} text="Voltar" loading={false} />
+        <PrimaryButton onClick={goToListUsers} text="Voltar" loading={false} />
       </Container>
     </SafeAreaView>
   );

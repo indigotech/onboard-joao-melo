@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { Container, FormBox, ButtonBox, BoxErrorMessage } from './style';
 import { Form, FormRef } from '../../components/form/index';
-import { AddButton, TextButton } from '../list-users/style';
 import { ErrorMessage } from '../../components/error-message';
-import { View, Text, ScrollView, SafeAreaView, Button } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import {
   validateBirthDate,
@@ -91,11 +90,11 @@ export function AddUser({ navigation }) {
       <ScrollView>
         <H1>Adicionar usuario</H1>
         <FormBox>
-          <Form name="Nome" validateValue={validateName} ref={nameRef} />
-          <Form name="Telefone" validateValue={validatePhone} ref={phoneRef} />
-          <Form name="Data de Nascimento (dd/mm/yyyy)" validateValue={validateBirthDate} ref={birthDateRef} />
-          <Form name="E-mail" validateValue={validateEmail} ref={emailRef} />
-          <Form name="Senha" validateValue={validatePassword} ref={passwordRef} />
+          <Form name="Nome" onValidateValue={validateName} ref={nameRef} />
+          <Form name="Telefone" onValidateValue={validatePhone} ref={phoneRef} />
+          <Form name="Data de Nascimento (dd/mm/yyyy)" onValidateValue={validateBirthDate} ref={birthDateRef} />
+          <Form name="E-mail" onValidateValue={validateEmail} ref={emailRef} />
+          <Form name="Senha" onValidateValue={validatePassword} ref={passwordRef} />
           <View>
             <Text>Escolha o Role</Text>
             <Picker selectedValue={role} onValueChange={itemValue => setRole(itemValue)}>
@@ -105,7 +104,7 @@ export function AddUser({ navigation }) {
           </View>
           <BoxErrorMessage>{errorMessage && <ErrorMessage message={errorMessage} />}</BoxErrorMessage>
           <ButtonBox>
-            <PrimaryButton text="Concluir" loading={loading} validate={validate} />
+            <PrimaryButton text="Concluir" loading={loading} onClick={validate} />
           </ButtonBox>
         </FormBox>
       </ScrollView>

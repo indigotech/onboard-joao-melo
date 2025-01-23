@@ -1,16 +1,16 @@
 import React from 'react';
-import { LogginButton, LoginText, ActivityIndicatorButton } from './style';
+import { StyledButton, LoginText, ButtonActivityIndicator } from './style';
 
 interface PrimaryButtonProps {
   text: string;
   loading: boolean;
-  validate: () => void;
+  onClick: () => void;
 }
 
 export function PrimaryButton(props: PrimaryButtonProps) {
   return (
-    <LogginButton onPress={props.validate} disabled={props.loading}>
-      {props.loading ? <ActivityIndicatorButton /> : <LoginText>{props.text}</LoginText>}
-    </LogginButton>
+    <StyledButton onPress={props.onClick} disabled={props.loading}>
+      {props.loading ? <ButtonActivityIndicator /> : <LoginText>{props.text}</LoginText>}
+    </StyledButton>
   );
 }

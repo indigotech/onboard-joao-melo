@@ -4,7 +4,7 @@ import { ErrorMessage } from './style';
 
 interface FormProps {
   name: string;
-  validateValue: (text: string) => string | null;
+  onValidateValue: (text: string) => string | null;
 }
 
 export interface FormRef {
@@ -14,18 +14,15 @@ export interface FormRef {
 export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
   const [value, setValue] = useState<string>('');
   const [caption, setCaption] = useState<string>('');
-  const [isError, setIsError] = useState(false);
 
   const validateForms = () => {
-    const message = props.validateValue(value);
+    const message = props.onValidateValue(value);
 
     if (message) {
-      setIsError(true);
       setCaption(message);
       return null;
     }
 
-    setIsError(false);
     setCaption('');
 
     return value;
@@ -35,16 +32,12 @@ export const Form = forwardRef<FormRef, FormProps>((props, ref) => {
     validateForms,
   }));
 
+  const isError = caption !== '';
+
   return (
     <Container>
       <LabelInput isError={isError}> {props.name} </LabelInput>
-      <Input
-        onChangeText={(newValue: string): void => {
-          setValue(newValue);
-        }}
-        value={value}
-        isError={isError}
-      />
+      <Input onChangeText={setValue} value={value} isError={isError} />
       {isError && <ErrorMessage> {caption} </ErrorMessage>}
     </Container>
   );

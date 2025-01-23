@@ -7,7 +7,7 @@ export const LoginText = styled.Text`
   font-weight: bold;
 `;
 
-export const LogginButton = styled.TouchableOpacity<{ disabled: boolean }>`
+export const StyledButton = styled.TouchableOpacity<{ disabled: boolean }>`
   align-items: center;
   justify-content: center;
   width: 90%;
@@ -19,7 +19,7 @@ export const LogginButton = styled.TouchableOpacity<{ disabled: boolean }>`
   margin-top: 20px;
 `;
 
-export const ActivityIndicatorButton = styled.ActivityIndicator`
+export const ButtonActivityIndicator = styled.ActivityIndicator`
   size: small;
   color: #fff;
 `;

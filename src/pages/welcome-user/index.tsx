@@ -69,11 +69,11 @@ export function WelcomeUser({ navigation }): JSX.Element {
       <StatusBar />
       <H1> Bem-vindo(a) à Taqtile! </H1>
       <InfoBox>
-        <Form ref={emailRef} name="E-mail" validateValue={validateEmail} />
-        <Form ref={passwordRef} name="Senha" validateValue={validatePassword} />
+        <Form ref={emailRef} name="E-mail" onValidateValue={validateEmail} />
+        <Form ref={passwordRef} name="Senha" onValidateValue={validatePassword} />
       </InfoBox>
 
-      <PrimaryButton text="Entrar" loading={loading} validate={validate} />
+      <PrimaryButton text="Entrar" loading={loading} onClick={validate} />
 
       {!valid && <ErrorMessage message={errorMessage} />}
     </SafeAreaView>

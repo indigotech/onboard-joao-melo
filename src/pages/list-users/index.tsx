@@ -79,7 +79,7 @@ export function ListUsers({ navigation }): JSX.Element {
           ListFooterComponent={<FooterList load={loading} />}
         />
       </FlatBox>
-      <PrimaryButton validate={goToAddUser} text="Adicionar Usuário" loading={false} />
+      <PrimaryButton onClick={goToAddUser} text="Adicionar Usuário" loading={false} />
     </Container>
   );
 }
