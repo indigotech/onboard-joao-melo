@@ -2,11 +2,12 @@ import React from 'react';
 import { ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRoute } from '@react-navigation/native';
-import { ButtonBox, AddButton, TextButton } from '../list-users/style';
+import { H1 } from '../../global-style/style';
 import { GET_USER_BY_ID } from '../../graphql/query/getUser';
 import { useQuery } from '@apollo/client';
 import { Container, Header, FieldGroup, Label, Value } from './style';
 import { ErrorMessage } from '../../components/error-message';
+import { PrimaryButton } from '../../components/primary-button';
 
 export function UserDetails({ navigation }) {
   const route = useRoute();
@@ -40,7 +41,7 @@ export function UserDetails({ navigation }) {
   return (
     <SafeAreaView>
       <Container>
-        <Header>Perfil do usuário</Header>
+        <H1>Perfil do usuário</H1>
         <FieldGroup>
           <Label>Nome</Label>
           <Value placeholder={user.name} editable={false} />
@@ -65,11 +66,7 @@ export function UserDetails({ navigation }) {
           <Label>Permissão</Label>
           <Value placeholder={user.role} editable={false} />
         </FieldGroup>
-        <ButtonBox>
-          <AddButton onPress={goToListUsers}>
-            <TextButton> Voltar </TextButton>
-          </AddButton>
-        </ButtonBox>
+        <PrimaryButton onClick={goToListUsers} text="Voltar" loading={false} />
       </Container>
     </SafeAreaView>
   );

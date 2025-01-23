@@ -37,3 +37,12 @@ export interface UsersResponse {
     pageInfo: PageInfo;
   };
 }
+
+export interface UserCreation {
+  name: string;
+  phone: string;
+  birthDate: string;
+  email: string;
+  role: 'admin' | 'user';
+  password: string;
+}

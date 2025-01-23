@@ -5,7 +5,9 @@ import { FooterList } from '../../components/footer-list';
 import { GET_USERS_QUERY } from '../../graphql/query/getUsers';
 import { useQuery } from '@apollo/client';
 import { UsersResponse, User } from '../../graphql/types/types';
-import { AddButton, ButtonBox, FlatBox, TextButton, TitleBox, TittleText } from './style';
+import { Container, FlatBox } from './style';
+import { H1 } from '../../global-style/style';
+import { PrimaryButton } from '../../components/primary-button';
 
 const LIMIT = 20;
 
@@ -63,10 +65,8 @@ export function ListUsers({ navigation }): JSX.Element {
   };
 
   return (
-    <SafeAreaView>
-      <TitleBox>
-        <TittleText>Usuarios</TittleText>
-      </TitleBox>
+    <Container>
+      <H1>Usuários</H1>
       <FlatBox>
         <FlatList
           data={users}
@@ -79,11 +79,7 @@ export function ListUsers({ navigation }): JSX.Element {
           ListFooterComponent={<FooterList load={loading} />}
         />
       </FlatBox>
-      <ButtonBox>
-        <AddButton onPress={goToAddUser}>
-          <TextButton> Adicionar </TextButton>
-        </AddButton>
-      </ButtonBox>
-    </SafeAreaView>
+      <PrimaryButton onClick={goToAddUser} text="Adicionar Usuário" loading={false} />
+    </Container>
   );
 }

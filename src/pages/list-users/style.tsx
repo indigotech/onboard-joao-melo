@@ -1,11 +1,15 @@
 import styled from 'styled-components/native';
 
+export const Container = styled.SafeAreaView`
+  align-items: center;
+  display: flex;
+`;
+
 export const TitleBox = styled.View`
   width: 100%;
   height: 50px;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
 `;
 
 export const TittleText = styled.Text`
@@ -17,30 +21,16 @@ export const TittleText = styled.Text`
 
 export const FlatBox = styled.View`
   padding: 20px;
-  margin-top: -20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  width: 90%;
   border-radius: 20px;
   height: 500px;
   background-color: #f0eeee;
 `;
 
-export const ButtonBox = styled.View`
+export const ContainerError = styled.SafeAreaView`
+  flex-direction: column;
   align-items: center;
+  display: flex;
+  flex: 1;
   justify-content: center;
-  margin-top: 20px;
-`;
-
-export const AddButton = styled.TouchableOpacity`
-  align-items: center;
-  justify-content: center;
-  background-color: #6c50f2;
-  border-radius: 20px;
-  width: 200px;
-  height: 60px;
-`;
-
-export const TextButton = styled.Text`
-  font-size: 16px;
-  color: white;
 `;
